@@ -1,0 +1,18 @@
+version: "3"
+services:
+  tte-front-dev:
+    image: tte-front-dev
+    container_name: tte-front-dev
+    build:
+      context: front
+      dockerfile: Dockerfile-dev
+      args:
+        user: ${USER}
+        uid: ${TTE_UID}
+    user: ${USER}
+    working_dir: /tte
+    tty: true
+    stdin_open: true
+    volumes:
+      - ${TTE_ROOT}:/tte
+      - ${TTE_ROOT}/tmp/home/${USER}:/home/${USER}

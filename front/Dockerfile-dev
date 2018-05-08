@@ -1,0 +1,11 @@
+FROM tte-front
+
+RUN apt-get update && apt-get install -y sudo git
+ARG user=root
+ARG uid=0
+RUN if [ ${uid} != 0 ]; then \
+    adduser --disabled-password --uid ${uid} ${user} && \
+    echo "${user}:${user}" | chpasswd && \
+    usermod -G sudo ${user} && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
+  fi
