@@ -1,0 +1,33 @@
+version: "2"
+options:
+  compose-file-path: 'docker-compose.yml'
+  compose-dev-file-path: 'docker-compose-dev-sync.yml'
+
+  verbose: true
+  max_attempt: 5
+  project_root: 'config_path'
+
+syncs:
+  tte-sync:
+    notify_terminal: true
+
+    src: './'
+    sync_host_ip: 'auto'
+
+    sync_excludes: ['.gitignore', '.git']
+    sync_excludes_type: 'Name'
+    sync_args: '-v'
+    sync_userid: '5000'
+    sync_prefer: 'default'
+
+    watch_excludes: ['.*/.git', '.gitignore']
+    watch_args: '-v'
+
+    monit_enable: false
+    # monit_interval: 5
+    # monit_high_cpu_cycles: 2
+  tte-home-sync:
+    notify_terminal: true
+
+    src: './tmp/home'
+    sync_host_ip: 'auto'

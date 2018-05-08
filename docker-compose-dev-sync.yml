@@ -1,0 +1,23 @@
+version: "3"
+services:
+  tte-front-dev:
+    image: tte-front-dev
+    container_name: tte-front-dev
+    build:
+      context: front
+      dockerfile: Dockerfile-dev
+      args:
+        user: ${USER}
+        uid: ${TTE_UID}
+    user: ${USER}
+    working_dir: /tte
+    tty: true
+    stdin_open: true
+    volumes:
+      - tte-sync:/tte:nocopy
+      - tte-home-sync:/home:nocopy
+volumes:
+  tte-sync:
+    external: true
+  tte-home-sync:
+    external: true
