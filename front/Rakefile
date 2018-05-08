@@ -1,0 +1,31 @@
+require "opal/compiler"
+
+js_dist = "dist/main.js"
+js_files = []
+rb_files = []
+Dir.glob("src/**/*.rb") do |rb_file|
+  js_file = rb_file.sub(/^src(.*)\.rb$/) { "out#$1.js" }
+  js_files << js_file
+  file js_file => rb_file do |t|
+    rb_src = File.read(t.source)
+    js_out = Opal.compile(rb_src)
+    File.write(t.name, js_out)
+  end
+end
+
+file js_dist => js_files do |t|
+  n = 8 * 1024
+  buf = String.new
+  File.open(t.name, "w") do |w|
+    t.sources.each do |source|
+      File.open(source) do |r|
+        while r.read(n, buf)
+	  w.syswrite buf
+	end
+      end
+    end
+  end
+end
+
+task default: :all
+task :all => js_dist
